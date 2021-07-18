@@ -44,38 +44,53 @@ export const SearchForm = ({
   };
 
   return (
-    <form role="search" onSubmit={handleSubmit} style={{ width: "50%" }}>
+    <form role="search" onSubmit={handleSubmit}>
       <VStack spacing="4">
         <FormControl>
-          <FormLabel htmlFor="keyword" mb="4">
+          <FormLabel htmlFor="keyword" my="8" color="gray.600">
             Check Order &amp; Delivery / Pick Up Information according to where
             you live:
           </FormLabel>
           <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <Search2Icon color="gray.300" />
+            <InputLeftElement
+              pointerEvents="none"
+              alignItems="center"
+              justifyContent="center"
+              height="47px"
+            >
+              <Search2Icon color="gray.300" w="5" h="5" alignSelf="center" />
             </InputLeftElement>
             <Input
               borderRadius="3xl"
               bg="white"
+              colorScheme="orange"
               id="keyword"
               type="search"
               name="keyword"
               spellCheck="false"
               placeholder="Your postcode or suburb name"
+              focusBorderColor="orange.300"
+              mr="4"
+              size="lg"
               value={inputValue}
               ref={inputRef}
               onChange={handleChange}
               onAbort={handleChange}
             />
+            <Button
+              type="submit"
+              colorScheme="orange"
+              size="lg"
+              borderRadius="3xl"
+              disabled={inputValue.length === 0}
+            >
+              Check
+            </Button>
           </InputGroup>
           {/* <FormHelperText fontSize="sm" textAlign="right">
           (e.g. 2000, or Sydney)
         </FormHelperText> */}
         </FormControl>
-        <Button type="submit" colorScheme="teal" size="lg" borderRadius="3xl">
-          Check
-        </Button>
       </VStack>
     </form>
   );
