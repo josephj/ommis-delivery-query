@@ -21,6 +21,14 @@ import { WarningIcon } from "@chakra-ui/icons";
 import SearchForm from "./SearchForm";
 import logoSrc from "./logo.png";
 
+const customTheme = {
+  ...theme,
+  fonts: {
+    ...theme.fonts,
+    body: "Cabin, sans-serif",
+  },
+};
+
 export const App = () => {
   const [data, setData] = React.useState([]);
   const [matchedData, setMatchedData] = React.useState([]);
@@ -54,7 +62,7 @@ export const App = () => {
   };
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={customTheme}>
       <Box textAlign="center">
         <Grid minH="100vh" p={3} bg="#f3ebe2">
           <Container maxW="100ch">
