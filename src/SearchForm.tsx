@@ -63,13 +63,13 @@ export const SearchForm = ({
             <Input
               borderRadius="3xl"
               bg="white"
-              colorScheme="orange"
+              colorScheme="red"
               id="keyword"
               type="search"
               name="keyword"
               spellCheck="false"
               placeholder="Your postcode or suburb name"
-              focusBorderColor="orange.300"
+              focusBorderColor="red.300"
               mr="4"
               size="lg"
               value={inputValue}
@@ -79,7 +79,7 @@ export const SearchForm = ({
             />
             <Button
               type="submit"
-              colorScheme="orange"
+              colorScheme="red"
               size="lg"
               borderRadius="3xl"
               disabled={inputValue.length === 0}

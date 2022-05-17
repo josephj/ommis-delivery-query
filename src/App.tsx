@@ -28,6 +28,7 @@ const customTheme = {
     body: "Cabin, sans-serif",
   },
 };
+console.log("-> customTheme", customTheme);
 
 export const App = () => {
   const [data, setData] = React.useState([]);
@@ -64,7 +65,7 @@ export const App = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box textAlign="center">
-        <Grid minH="100vh" p={3} bg="#f3ebe2">
+        <Grid minH="100vh" p={3} bg="#f7e9e4">
           <Container maxW="100ch">
             <VStack spacing={8}>
               <Box mb="6">
@@ -98,7 +99,7 @@ export const App = () => {
                   borderWidth="lg"
                   borderRadius="lg"
                   bg="white"
-                  colorScheme="orange"
+                  colorScheme="red"
                   size="lg"
                 >
                   <Thead>
