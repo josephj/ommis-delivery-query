@@ -65,7 +65,7 @@ export const App = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box textAlign="center">
-        <Grid minH="100vh" p={3} bg="#f7e9e4">
+        <Grid minH="100vh" p={3} bg="#f3f3f3">
           <Container maxW="100ch">
             <VStack spacing={8}>
               <Box mb="6">
