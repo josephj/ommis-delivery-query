@@ -28,7 +28,6 @@ const customTheme = {
     body: "Cabin, sans-serif",
   },
 };
-console.log("-> customTheme", customTheme);
 
 export const App = () => {
   const [data, setData] = React.useState([]);
