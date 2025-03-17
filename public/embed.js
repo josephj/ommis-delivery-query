@@ -5,60 +5,85 @@
  * directly into their websites without redirecting users to a different page.
  *
  * Usage:
- * 1. Include this script in your HTML
- * 2. Add a container element with the ID "ommis-delivery-query"
- * 3. The tool will be embedded as an iframe in that container
+ * 1. Include the embed code in your HTML
+ * 2. The tool will be embedded as an iframe in the specified container
  */
 
 (function () {
-  // Configuration
-  const OMMIS_URL = "https://ommis.netlify.app/";
-  const DEFAULT_HEIGHT = "600px";
-  const DEFAULT_WIDTH = "100%";
+  // Load configuration or use defaults if config.js is not included
+  const config = window.OMMIS_CONFIG || {
+    BASE_URL: "https://ommis.netlify.app/",
+    DEFAULT_HEIGHT: "600px",
+    DEFAULT_WIDTH: "100%",
+    CONTAINER_CLASS: "ommis-delivery-pickup-embed",
+    SCRIPT_ID: "ommis-delivery-pickup-embed-js",
+    MESSAGES: {
+      HEIGHT_UPDATE: "ommis-height-update",
+      PARENT_RESIZE: "ommis-parent-resize",
+    },
+  };
 
-  // Create and insert the iframe when the DOM is fully loaded
-  document.addEventListener("DOMContentLoaded", function () {
-    // Find the container element
-    const container = document.getElementById("ommis-delivery-query");
-    if (!container) {
-      console.error(
-        "OMMIS Embed Error: No element with ID 'ommis-delivery-query' found"
-      );
-      return;
-    }
-
-    // Create the iframe
+  /**
+   * Creates and configures the iframe element
+   * @returns {HTMLIFrameElement} The configured iframe
+   */
+  function createIframe() {
     const iframe = document.createElement("iframe");
-    iframe.src = OMMIS_URL;
-    iframe.style.width = DEFAULT_WIDTH;
-    iframe.style.height = DEFAULT_HEIGHT;
+    iframe.src = config.BASE_URL;
+    iframe.style.width = config.DEFAULT_WIDTH;
+    iframe.style.height = config.DEFAULT_HEIGHT;
     iframe.style.border = "none";
     iframe.style.overflow = "hidden";
     iframe.setAttribute("allowtransparency", "true");
     iframe.setAttribute("title", "OMMIS Delivery Query");
     iframe.setAttribute("loading", "lazy");
+    return iframe;
+  }
 
-    // Add the iframe to the container
-    container.appendChild(iframe);
-
-    // Listen for messages from the iframe to adjust height
+  /**
+   * Sets up message listeners for iframe resizing
+   * @param {HTMLIFrameElement} iframe - The iframe element
+   */
+  function setupMessageListeners(iframe) {
+    // Listen for height updates from the iframe
     window.addEventListener("message", function (event) {
-      // Verify the message origin for security
-      if (event.origin !== new URL(OMMIS_URL).origin) return;
+      if (event.origin !== new URL(config.BASE_URL).origin) return;
 
-      // Check if the message is a height update
-      if (event.data && event.data.type === "ommis-height-update") {
+      if (event.data && event.data.type === config.MESSAGES.HEIGHT_UPDATE) {
         iframe.style.height = event.data.height + "px";
       }
     });
 
-    // Handle window resize events
+    // Notify iframe when parent window resizes
     window.addEventListener("resize", function () {
-      // Notify the iframe that the parent has been resized
       iframe.contentWindow.postMessage(
-        { type: "ommis-parent-resize" },
-        OMMIS_URL
+        { type: config.MESSAGES.PARENT_RESIZE },
+        config.BASE_URL
       );
     });
-  });
+  }
+
+  /**
+   * Initialize the embed
+   */
+  function init() {
+    const container = document.querySelector("." + config.CONTAINER_CLASS);
+    if (!container) {
+      console.error(
+        `OMMIS Embed Error: No element with class '${config.CONTAINER_CLASS}' found`
+      );
+      return;
+    }
+
+    const iframe = createIframe();
+    container.appendChild(iframe);
+    setupMessageListeners(iframe);
+  }
+
+  // Initialize when the page loads
+  if (document.readyState === "complete") {
+    init();
+  } else {
+    window.addEventListener("load", init);
+  }
 })();

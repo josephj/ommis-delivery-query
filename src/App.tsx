@@ -42,6 +42,7 @@ const sendHeightToParent = () => {
   if (!isEmbedded()) return;
 
   const height = document.documentElement.scrollHeight;
+  console.log("[DEBUG] sending height to parent :", height);
   window.parent.postMessage({ type: "ommis-height-update", height }, "*");
 };
 

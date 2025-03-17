@@ -1,26 +1,173 @@
 <!DOCTYPE html>
-<html></html>
-    <head>
-        <title>Embed</title>
-    </head>
-    <body>
-        <h1>Embed</h1>
-        <textarea id="ommis-delivery-pickup-embed-code" style="width: 100%; height: 100px;">
+<html lang="en">
+  <head>
+    <title>Embed</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Add Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Prism.js for syntax highlighting -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .copy-btn:hover {
+        background-color: #4338ca;
+      }
+      .copy-btn:active {
+        transform: scale(0.98);
+      }
+      /* Custom styles for code display */
+      .code-container {
+        position: relative;
+        border-radius: 0.375rem;
+        background-color: #272822;
+        max-height: 400px;
+        overflow: auto;
+      }
+      .code-container pre {
+        margin: 0;
+        padding: 1rem;
+        border-radius: 0.375rem;
+      }
+      .code-container code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        font-size: 0.875rem;
+        line-height: 1.5;
+      }
+      /* Hide the textarea visually but keep it accessible for copying */
+      .hidden-textarea {
+        position: absolute;
+        left: -9999px;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Load the config file for the preview -->
+    <script src="config.js"></script>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-indigo-700 mb-2">
+          Ommis Delivery & Pickup Embed
+        </h1>
+        <p class="text-gray-600">
+          Copy the code below and paste it into your website to embed the
+          delivery & pickup widget.
+        </p>
+      </header>
 
-        </textarea>
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="text-lg font-semibold text-gray-800">Embed Code</h2>
+          <button
+            id="copy-btn"
+            class="copy-btn bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+          >
+            Copy to Clipboard
+          </button>
+        </div>
 
-        <!-- Embed code (start) -->
-        <div class="ommis-delivery-pickup-embed" style="width: 100%; overflow: hidden;"></div>
-        <script type="text/javascript">
-            (function(d, id) {
-                var t, el = d.scripts[d.scripts.length - 1].previousElementSibling;
-                if (d.getElementById(id)) return;
-                t = d.createElement('script');
-                t.src = 'https://ommis.netlify.app/embed.js';
-                t.id = id;
-                (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(t);
-            }(document, 'ommis-delivery-pickup-embed-js'));
-        </script> 
-        <!-- Embed code (end) -->
-    </body>
+        <!-- Hidden textarea for copy functionality -->
+        <textarea
+          id="ommis-delivery-pickup-embed-code"
+          class="hidden-textarea"
+          readonly
+        >
+<!-- OMMIS Delivery & Pickup Widget Embed Code -->
+<div class="ommis-delivery-pickup-embed" style="width: 100%; overflow: hidden;"></div>
+<script type="text/javascript">
+(function(d) {
+  var s = d.createElement('script');
+  s.src = 'https://ommis.netlify.app/embed.js';
+  s.id = 'ommis-delivery-pickup-embed-js';
+  s.async = true;
+  (d.head || d.body).appendChild(s);
+})(document);
+</script></textarea
+        >
+
+        <!-- Syntax highlighted code display -->
+        <div class="code-container line-numbers">
+          <pre
+            class="language-markup"
+          ><code id="highlighted-code">&lt;!-- OMMIS Delivery & Pickup Widget Embed Code --&gt;
+&lt;div class="ommis-delivery-pickup-embed" style="width: 100%; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+(function(d) {
+  var s = d.createElement('script');
+  s.src = 'https://ommis.netlify.app/embed.js';
+  s.id = 'ommis-delivery-pickup-embed-js';
+  s.async = true;
+  (d.head || d.body).appendChild(s);
+})(document);
+&lt;/script&gt;
+<!-- Embed code (end) --></code></pre>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Preview</h2>
+        <div class="border border-gray-300 rounded-md p-4">
+          <!-- Embed code (start) -->
+          <div
+            class="ommis-delivery-pickup-embed"
+            style="width: 100%; overflow: hidden"
+          ></div>
+          <script type="text/javascript">
+            (function (d) {
+              // Create script element
+              var s = d.createElement("script");
+              s.src = "embed.js";
+              s.id = "ommis-delivery-pickup-embed-js";
+              s.async = true;
+
+              // Append to document
+              (d.head || d.body).appendChild(s);
+            })(document);
+          </script>
+          <!-- Embed code (end) -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Prism.js scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+    <script>
+      document
+        .getElementById("copy-btn")
+        .addEventListener("click", function () {
+          const textarea = document.getElementById(
+            "ommis-delivery-pickup-embed-code"
+          );
+          textarea.select();
+          document.execCommand("copy");
+
+          // Change button text temporarily
+          const btn = this;
+          const originalText = btn.textContent;
+          btn.textContent = "Copied!";
+          btn.classList.remove("bg-indigo-600");
+          btn.classList.add("bg-green-600");
+
+          setTimeout(function () {
+            btn.textContent = originalText;
+            btn.classList.remove("bg-green-600");
+            btn.classList.add("bg-indigo-600");
+          }, 2000);
+        });
+    </script>
+  </body>
 </html>
