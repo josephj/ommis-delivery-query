@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Papa from "papaparse";
+import { useEffect, useRef, useState } from "react";
 import {
   ChakraProvider,
   Box,
@@ -29,21 +30,70 @@ const customTheme = {
   },
 };
 
+const isEmbedded = () => {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+};
+
+const sendHeightToParent = () => {
+  if (!isEmbedded()) return;
+
+  const height = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: "ommis-height-update", height }, "*");
+};
+
 export const App = () => {
-  const [data, setData] = React.useState([]);
-  const [matchedData, setMatchedData] = React.useState([]);
-  const [notFound, setNotFound] = React.useState(false);
+  const [data, setData] = useState([]);
+  const [matchedData, setMatchedData] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+  const appRef = useRef<HTMLDivElement>(null);
 
   const loadData = async () => {
     const response = await fetch("/data.csv");
     const csvText = await response.text();
     const { data = [] } = Papa.parse(csvText, { header: true });
-    setData(data);
+    setData(data as any);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadData();
   }, []);
+
+  useEffect(() => {
+    if (!isEmbedded()) return;
+
+    const timeoutId = setTimeout(sendHeightToParent, 500);
+    const resizeObserver = new ResizeObserver(() => {
+      sendHeightToParent();
+    });
+
+    if (appRef.current) {
+      resizeObserver.observe(appRef.current);
+    }
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === "ommis-parent-resize") {
+        sendHeightToParent();
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      clearTimeout(timeoutId);
+      resizeObserver.disconnect();
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isEmbedded()) {
+      sendHeightToParent();
+    }
+  }, [matchedData, notFound]);
 
   const handleSearch = (value: string = "") => {
     setNotFound(false);
@@ -63,7 +113,7 @@ export const App = () => {
 
   return (
     <ChakraProvider theme={customTheme}>
-      <Box textAlign="center">
+      <Box textAlign="center" ref={appRef}>
         <Grid minH="100vh" p={3} bg="#f3f3f3">
           <Container maxW="100ch">
             <VStack spacing={8}>
@@ -77,7 +127,7 @@ export const App = () => {
                     <Flex alignItems="center" ml={4}>
                       <WarningIcon w={10} h={10} mr={4} color="orange.300" />
                       <Box textAlign="left">
-                        Sorry, we can’t deliver to your area at moment. Please
+                        Sorry, we can't deliver to your area at moment. Please
                         contact{" "}
                         <Link
                           href="mailto:info@ommis.com.au"
