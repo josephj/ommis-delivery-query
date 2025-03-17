@@ -51,6 +51,17 @@ export const App = () => {
   const [matchedData, setMatchedData] = useState([]);
   const [notFound, setNotFound] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
+  const embedded = isEmbedded();
+
+  useEffect(() => {
+    if (embedded) {
+      document.body.style.backgroundColor = "transparent";
+      document.documentElement.style.backgroundColor = "transparent";
+      document.documentElement.classList.add("embedded");
+    } else {
+      document.documentElement.classList.remove("embedded");
+    }
+  }, [embedded]);
 
   const loadData = async () => {
     const response = await fetch("/data.csv");
@@ -64,7 +75,7 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEmbedded()) return;
+    if (!embedded) return;
 
     const timeoutId = setTimeout(sendHeightToParent, 500);
     const resizeObserver = new ResizeObserver(() => {
@@ -88,13 +99,13 @@ export const App = () => {
       resizeObserver.disconnect();
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [embedded]);
 
   useEffect(() => {
-    if (isEmbedded()) {
+    if (embedded) {
       sendHeightToParent();
     }
-  }, [matchedData, notFound]);
+  }, [matchedData, notFound, embedded]);
 
   const handleSearch = (value: string = "") => {
     setNotFound(false);
@@ -115,7 +126,7 @@ export const App = () => {
   return (
     <ChakraProvider theme={customTheme}>
       <Box textAlign="center" ref={appRef}>
-        <Grid minH="100vh" p={3} bg="#f3f3f3">
+        <Grid minH="100vh" p={3} bg={embedded ? "transparent" : "#f3f3f3"}>
           <Container maxW="100ch">
             <VStack spacing={8}>
               <Box mb="6">
