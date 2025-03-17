@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html></html>
+    <head>
+        <title>Embed</title>
+    </head>
+    <body>
+        <h1>Embed</h1>
+        <textarea id="ommis-delivery-pickup-embed-code" style="width: 100%; height: 100px;">
+
+        </textarea>
+
+        <!-- Embed code (start) -->
+        <div class="ommis-delivery-pickup-embed" style="width: 100%; overflow: hidden;"></div>
+        <script type="text/javascript">
+            (function(d, id) {
+                var t, el = d.scripts[d.scripts.length - 1].previousElementSibling;
+                if (d.getElementById(id)) return;
+                t = d.createElement('script');
+                t.src = 'https://ommis.netlify.app/embed.js';
+                t.id = id;
+                (d.getElementsByTagName('head')[0] || d.getElementsByTagName('body')[0]).appendChild(t);
+            }(document, 'ommis-delivery-pickup-embed-js'));
+        </script> 
+        <!-- Embed code (end) -->
+    </body>
+</html>
